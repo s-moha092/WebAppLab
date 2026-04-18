@@ -17,15 +17,19 @@ stages:
         packageType: 'sdk'
         version: '8.x'
 
-    - script: dotnet restore
+    # Restore using explicit project file
+    - script: dotnet restore WebAppLab.csproj
       displayName: Restore
 
-    - script: dotnet build --configuration Release
+    # Build using explicit project file
+    - script: dotnet build WebAppLab.csproj --configuration Release
       displayName: Build
 
-    - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
+    # Publish using explicit project file
+    - script: dotnet publish WebAppLab.csproj -c Release -o $(Build.ArtifactStagingDirectory)
       displayName: Publish
 
+    # Publish artifact
     - task: PublishBuildArtifacts@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)'
