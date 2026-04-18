@@ -4,22 +4,41 @@ trigger:
 pool:
   name: Default
 
-steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '8.x'
+stages:
 
-- script: dotnet restore
-  displayName: Restore
+# ================= CI STAGE =================
+- stage: Build
+  displayName: Build Stage
+  jobs:
+  - job: BuildJob
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '8.x'
 
-- script: dotnet build --configuration Release
-  displayName: Build
+    - script: dotnet restore
+      displayName: Restore
 
-- script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
-  displayName: Publish
+    - script: dotnet build --configuration Release
+      displayName: Build
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: 'drop'
+    - script: dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
+      displayName: Publish
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'drop'
+
+# ================= CD STAGE =================
+- stage: Deploy
+  displayName: Deploy Stage
+  dependsOn: Build
+  condition: succeeded()
+
+  jobs:
+  - job: DeployJob
+    steps:
+    - script: echo "Deploying application..."
+      displayName: Deploy (Placeholder)
