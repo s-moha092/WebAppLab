@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "EqrRm4bxWkU=",
+  "dgSpecHash": "OXFmxJCkbHM=",
   "success": true,
   "projectFilePath": "/Users/samiraosman/Downloads/WebAppLab/WebAppLab.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/samiraosman/.nuget/packages/microsoft.netcore.app.ref/8.0.25/microsoft.netcore.app.ref.8.0.25.nupkg.sha512",
+    "/Users/samiraosman/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.25/microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512",
+    "/Users/samiraosman/.nuget/packages/microsoft.netcore.app.host.osx-x64/8.0.25/microsoft.netcore.app.host.osx-x64.8.0.25.nupkg.sha512"
+  ],
   "logs": []
 }
