@@ -12,21 +12,35 @@ stages:
   jobs:
   - job: BuildJob
     steps:
+
+    # ✅ Force exact SDK version (IMPORTANT)
     - task: UseDotNet@2
+      displayName: Install .NET SDK
       inputs:
         packageType: 'sdk'
-        version: '8.x'
+        version: '8.0.204'   # or match EXACT version you use locally
+        installationPath: $(Agent.ToolsDirectory)/dotnet
 
-    # Restore using explicit project file
+    # ✅ Debug step (optional but useful)
+    - script: dotnet --version
+      displayName: Check .NET Version
+
+    # ✅ Clean temp space (fix disk warning)
+    - script: |
+        echo "Cleaning temp space..."
+        rm -rf $(Agent.TempDirectory)/*
+      displayName: Clean Temp Directory
+
+    # Restore
     - script: dotnet restore WebAppLab.csproj
       displayName: Restore
 
-    # Build using explicit project file
-    - script: dotnet build WebAppLab.csproj --configuration Release
+    # Build
+    - script: dotnet build WebAppLab.csproj --configuration Release --no-restore
       displayName: Build
 
-    # Publish using explicit project file
-    - script: dotnet publish WebAppLab.csproj -c Release -o $(Build.ArtifactStagingDirectory)
+    # Publish
+    - script: dotnet publish WebAppLab.csproj -c Release -o $(Build.ArtifactStagingDirectory) --no-build
       displayName: Publish
 
     # Publish artifact
